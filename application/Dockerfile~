@@ -4,8 +4,6 @@ WORKDIR /home/node/application
 
 ADD "./package.json" "/home/node/application/package.json"
 
-RUN ls -al
-
 RUN ["npm", "install"]
 
 CMD ["npm", "start"]

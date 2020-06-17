@@ -6,8 +6,6 @@ WORKDIR /home/node/server
 
 ADD "./package.json" "/home/node/server/package.json"
 
-RUN ls -al
-
 RUN ["npm", "install", "nodemon", "-g"]
 
 RUN ["npm", "install", "opencollective-postinstall", "--save"]
