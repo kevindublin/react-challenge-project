@@ -1,8 +1,8 @@
 FROM node:11
 
-WORKDIR /home/node/application
+WORKDIR /home/application
 
-ADD "./package.json" "/home/node/application/package.json"
+COPY / ./
 
 RUN ls -al
 

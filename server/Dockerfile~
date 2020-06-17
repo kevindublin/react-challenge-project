@@ -4,7 +4,9 @@ RUN ln -fs /usr/share/zoneinfo/US/Pacific-New /etc/localtime && dpkg-reconfigure
 
 WORKDIR /home/node/server
 
-ADD "./package.json" "/home/node/server/package.json"
+COPY / ./
+
+RUN ls -al
 
 RUN ["npm", "install", "nodemon", "-g"]
 
