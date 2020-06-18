@@ -3,13 +3,16 @@ import { Template } from '../../components';
 import { SERVER_IP } from '../../private';
 import './viewOrders.css';
 
+const DEL_ORDER_URL = `${SERVER_IP}/api/delete-order`
+const GET_ORDERS_URL = `${SERVER_IP}/api/current-orders`
+
 class ViewOrders extends Component {
     state = {
         orders: []
     }
 
-    componentDidMount() {
-        fetch(`${SERVER_IP}/api/current-orders`)
+    getOrders() {
+        fetch(GET_ORDERS_URL)
             .then(response => response.json())
             .then(response => {
                 if(response.success) {
@@ -19,6 +22,29 @@ class ViewOrders extends Component {
                 }
             });
     }
+    
+    componentDidMount() {
+        this.getOrders();
+    }
+
+
+    onDelete(id) {
+        console.log('attempring to delete...',id);
+        fetch(DEL_ORDER_URL, {
+            method: 'POST',
+            body: JSON.stringify({
+                id,
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(response => console.log("Successfully deleted.", JSON.stringify(response)))
+        .catch(error => console.error(error));
+        this.getOrders();
+        }
+
 
     render() {
         return (
@@ -38,7 +64,7 @@ class ViewOrders extends Component {
                                  </div>
                                  <div className="col-md-4 view-order-right-col">
                                      <button className="btn btn-success">Edit</button>
-                                     <button className="btn btn-danger">Delete</button>
+                                     <button className="btn btn-danger" onClick={() => this.onDelete(order._id)}>Delete</button>
                                  </div>
                             </div>
                         );
