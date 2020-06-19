@@ -20,8 +20,8 @@ class ViewOrders extends Component {
     }
 
     delete(id) {
-        id.preventDefault();
-        this.props.onDelete(id);
+        // not working, tried to follow the pattern on loginForm
+        deleteOrder(id);
       }
 
     
@@ -85,8 +85,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch) => {
     return {
-      deleteOrder: id => dispatch(ordersAction.deleteOrder(id)),
-      editOrder: order => dispatch(ordersAction.editOrder(order))
+      deleteOrder: id => dispatch(deleteOrder(id)),
+      editOrder: order => dispatch(editOrder(order))
     }
   };
 

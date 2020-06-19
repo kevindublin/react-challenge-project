@@ -50,10 +50,10 @@ export const editOrder = (order) => {
         fetch(`${SERVER_IP}/api/edit-order`, {
             method: 'POST',
             body: JSON.stringify({
-                id: id,
-                ordered_by: ordered_by,
-                order_item: order_item,
-                quantity: quantity
+                id: order.id,
+                ordered_by: order.ordered_by,
+                order_item: order.order_item,
+                quantity: order.quantity
             }),
             headers: {
                 'Content-Type': 'application/json'
