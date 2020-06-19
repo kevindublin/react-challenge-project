@@ -1,14 +1,34 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 import { Template } from '../../components';
 import { SERVER_IP } from '../../private';
 import './viewOrders.css';
+import { deleteOrder, editOrder } from '../../redux/actions/ordersActions';
 
 const DEL_ORDER_URL = `${SERVER_IP}/api/delete-order`
 const GET_ORDERS_URL = `${SERVER_IP}/api/current-orders`
 
+const mapActionsToProps = dispatch => ({
+    onDelete(id) {
+      dispatch(deleteOrder(id))
+    }
+  })
+
 class ViewOrders extends Component {
     state = {
         orders: []
+    }
+
+    delete(id) {
+        id.preventDefault();
+        this.props.onDelete(id);
+      }
+
+    
+    edit() {
+        // figure out how to edit -- render order form? 
+        // create new form? push back to OrderForm and have it also handle editing?
+        console.log("ta ta for now")
     }
 
     getOrders() {
@@ -28,24 +48,6 @@ class ViewOrders extends Component {
     }
 
 
-    onDelete(id) {
-        console.log('attempring to delete...',id);
-        fetch(DEL_ORDER_URL, {
-            method: 'POST',
-            body: JSON.stringify({
-                id,
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(res => res.json())
-        .then(response => console.log("Successfully deleted.", JSON.stringify(response)))
-        .catch(error => console.error(error));
-        this.getOrders();
-        }
-
-
     render() {
         return (
             <Template>
@@ -63,8 +65,8 @@ class ViewOrders extends Component {
                                     <p>Quantity: {order.quantity}</p>
                                  </div>
                                  <div className="col-md-4 view-order-right-col">
-                                     <button className="btn btn-success">Edit</button>
-                                     <button className="btn btn-danger" onClick={() => this.onDelete(order._id)}>Delete</button>
+                                     <button className="btn btn-success"onClick={() => this.edit(order)}>Edit</button>
+                                     <button className="btn btn-danger" onClick={() => this.delete(order._id)}>Delete</button>
                                  </div>
                             </div>
                         );
@@ -75,4 +77,17 @@ class ViewOrders extends Component {
     }
 }
 
-export default ViewOrders;
+const mapStateToProps = (state, ownProps) => {
+    return {
+      orders: state.orders
+    }
+  };
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+      deleteOrder: id => dispatch(ordersAction.deleteOrder(id)),
+      editOrder: order => dispatch(ordersAction.editOrder(order))
+    }
+  };
+
+export default connect(mapStateToProps, mapActionsToProps, mapDispatchToProps)(ViewOrders);
