@@ -32,7 +32,6 @@ export const loginUser = (email, password) => {
 }
 
 export const logoutUser = () => {
-    console.log('successfully logged out.');
     return {
         type: LOGOUT,
         payload: null,
