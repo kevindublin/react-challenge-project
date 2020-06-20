@@ -8,7 +8,7 @@ class ViewOrders extends Component {
         orders: []
     }
 
-    componentDidMount() {
+    getOrders() {
         fetch(`${SERVER_IP}/api/current-orders`)
             .then(response => response.json())
             .then(response => {
@@ -19,6 +19,31 @@ class ViewOrders extends Component {
                 }
             });
     }
+
+    deleteOrder(id) {
+        console.log('attempring to delete...',id);
+        fetch(`${SERVER_IP}/api/delete-order`, {
+            method: 'POST',
+            body: JSON.stringify({
+                id,
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(res => res.json())
+        .then(response => {
+            if (response.success) {
+                console.log('Successfully deleted.')
+            }
+        })
+        .catch(error => console.error(error));
+        this.getOrders();
+        };  
+
+    componentDidMount() {
+        this.getOrders();
+    } 
 
     render() {
         return (
@@ -38,7 +63,7 @@ class ViewOrders extends Component {
                                  </div>
                                  <div className="col-md-4 view-order-right-col">
                                      <button className="btn btn-success">Edit</button>
-                                     <button className="btn btn-danger">Delete</button>
+                                     <button className="btn btn-danger" onClick={() => {deleteOrder(order._id)}}>Delete</button>
                                  </div>
                             </div>
                         );
