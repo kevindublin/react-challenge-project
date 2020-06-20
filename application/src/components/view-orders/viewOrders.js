@@ -8,6 +8,18 @@ class ViewOrders extends Component {
         orders: []
     }
 
+    setTime(date) {
+        let hour = date.getHours();
+        let minute = date.getMinutes();
+        let second = date.getSeconds();
+
+        minute = minute < 10 ? '0' + minute : minute;
+        second = second < 10 ? '0' + second : second;
+        let newDate = `${hour}:${minute}:${second}`
+
+        return newDate;
+    }
+
     componentDidMount() {
         fetch(`${SERVER_IP}/api/current-orders`)
             .then(response => response.json())
@@ -33,7 +45,7 @@ class ViewOrders extends Component {
                                     <p>Ordered by: {order.ordered_by || ''}</p>
                                 </div>
                                 <div className="col-md-4 d-flex view-order-middle-col">
-                                    <p>Order placed at {`${createdDate.getHours()}:${createdDate.getMinutes()}:${createdDate.getSeconds()}`}</p>
+                                    <p>Order placed at {this.setTime(createdDate)}</p>
                                     <p>Quantity: {order.quantity}</p>
                                  </div>
                                  <div className="col-md-4 view-order-right-col">
